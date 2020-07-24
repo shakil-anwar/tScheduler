@@ -23,6 +23,7 @@ class Task
     taskCb_t _Cb;
     int _interval;
     int _prevTime;
+    byte _priority;
     
 
 };
