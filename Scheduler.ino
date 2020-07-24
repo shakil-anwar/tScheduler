@@ -8,16 +8,16 @@ void func1()
 
 void func2()
 {
-  Serial.println(F("Task Two"));
+  Serial.println(F("Task Two Done"));
 }
 
 void func3()
 {
-  Serial.println(F("Task Three"));
+  Serial.println(F("Task Three Done"));
 }
-Task task1(2000, &func1);
-Task taks2(3000, &func2);
-Task task3(10000, &func3);
+Task task1(5000, &func1);
+Task taks2(5000, &func2);
+Task task3(5000, &func3);
 
 Scheduler scheduler;
 void setup()
@@ -33,5 +33,6 @@ void setup()
 
 void loop()
 {
+//  Serial.println(F("<---------Loop Start------------------->"));
   scheduler.run();
 }

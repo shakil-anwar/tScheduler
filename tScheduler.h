@@ -18,11 +18,11 @@ class Task
 {
     friend class Scheduler;
   public:
-    Task(int intervalSec, taskCb_t cb);
+    Task(long interval, taskCb_t cb, byte priority = 0);
   private:
     taskCb_t _Cb;
-    int _interval;
-    int _prevTime;
+    long _interval;
+    long _prevTime;
     byte _priority;
     
 
@@ -35,11 +35,9 @@ class Scheduler
     void begin(uint32_t (*timer)(void) = NULL);
     void addTask(Task *taskPtr);
     void removeTask(Task *taskPtr);
-    Task *getCurrentTask();
+    Node_t *getTaskQueue(Node_t *head);
     void run();
   private:
     uint32_t (*_timer)(void);
-
-    //  Task *_task;
 };
 #endif
