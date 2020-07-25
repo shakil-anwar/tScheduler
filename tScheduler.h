@@ -1,18 +1,8 @@
 #ifndef _T_SCHEDULER_
 #define _T_SCHEDULER_
 #include <Arduino.h>
-
+#include "LinkedList.h"
 typedef void (*taskCb_t)(void);
-
-class Scheduler;
-class Task;
-
-typedef struct Node_t
-{
-  Task *task;
-  Node_t *next;
-};
-
 
 class Task
 {
