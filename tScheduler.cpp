@@ -82,10 +82,46 @@ void Scheduler::begin(uint32_t (*timer)(void))
   {
     _timer = timer;
   }
+  
+  _totalTasks = getSize(taskHead);
+  Serial.print(F("Total Tasks: "));Serial.println(_totalTasks);
+  qPtr = (Task**)malloc(_totalTasks*sizeof(Task*));
 
-  Serial.print(F("Total Tasks: "));Serial.println(getSize(taskHead));
+  nullQBuf();
+//  Task **p = qPtr;
+//  for(byte i = 0; i<_totalTasks;i++)
+//  {
+//    *p = NULL;
+//    p++;
+////    if(*qPtr == NULL)
+////    {
+////      Serial.println("NULL");
+////    }
+//  }
+
+
+//  Serial.print(F("Task Size: "));Serial.println(sizeof(Task*));
+//  _queuePtr = (Task*)malloc(_totalTasks*sizeof(Task*));
+//
+//  Task *p = _queuePtr;
+//  for(byte i =0; i<_totalTasks; i++)
+//  {
+//    p = NULL;
+//    p++;
+//  }
 
 }
+
+void Scheduler::nullQBuf()
+{
+  Task **p = qPtr;
+  for(byte i = 0; i<_totalTasks;i++)
+  {
+    *p = NULL;
+    p++;
+  }
+}
+
 void Scheduler::addTask(Task *taskPtr)
 {
   taskHead = addNode(taskHead, taskPtr);
@@ -113,29 +149,33 @@ void Scheduler::addTask(Task *taskPtr)
 //
 //  return NULL;
 //}
-Node_t *Scheduler::getTaskQueue(Node_t *head)
+
+Task **Scheduler::getTaskQueue(Task **qBuf)
 {
   //  Serial.println(F("<---------Start------------------->"));
   Node_t *ptr = taskHead;
-  long currentTime;
-  Task *task;
-
+  Task *task = NULL;
+  Task **qptr = qBuf;
+  long currentTime;  
   do
   {
     currentTime = _timer();
+//    currentTime = millis();
     task = ptr -> task;
+    Serial.print(F(" Millis :"));Serial.println(currentTime);
+    Serial.print(F("Prev Millis :"));Serial.println(task -> _prevTime);
     //    Serial.println(F("Counter"));
     if ((currentTime - task -> _prevTime) >= task -> _interval)
     {
-//      Serial.println(F("Task added into queue"));
-      head = addNode(head, task);
+      Serial.println(F("<-------------------Task added into queue")); 
       task -> _prevTime = currentTime;
+      *qBuf = task;
+      qBuf++;
     }
     ptr = ptr -> next;
-
   } while (ptr != NULL);
   //  Serial.println(F("<---------End------------------->"));
-  return head;
+  return qptr;
 }
 
 void Scheduler::run()
@@ -154,21 +194,29 @@ void Scheduler::run()
   //  temp -> task -> _Cb();
 
 
-  Node_t *qPtr = getTaskQueue(queueHead);
-  if (qPtr)
+  Task  **ptr = getTaskQueue(qPtr);
+//  Serial.println(F("<============Execution start===========>"));
+  for( byte i = 0; i < _totalTasks; i++)
   {
-    Serial.println(F("<============Execution start===========>"));
-    Serial.print(F("Queued Tasks: "));Serial.println(getSize(qPtr));
-    do
+    if(*ptr !=NULL)
     {
-//      Serial.println(F("<---------Task----------->"));
-      qPtr -> task -> _Cb();     
-      Node_t *lastPtr = qPtr;
-      qPtr = qPtr -> next;
-      free(lastPtr);
-    } while (qPtr != NULL);
-    queueHead = NULL;
+      Serial.println(F("NOT NULL"));
+    }
   }
+  nullQBuf();
+//  if (*ptr)
+//  {
+//    Serial.println(F("<============Execution start===========>"));
+//    Task **prevPtr = NULL;
+//    do
+//    {
+//      (*ptr) -> _Cb();
+////      prevPtr = ptr;
+//      ptr++;
+////      *prevPtr = NULL;
+//    } while (*ptr);
+//    nullQBuf();
+//  }
 
 }
 
