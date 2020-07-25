@@ -35,7 +35,7 @@ class Scheduler
     void begin(uint32_t (*timer)(void) = NULL);
     void addTask(Task *taskPtr);
     void removeTask(Task *taskPtr);
-    Task **getTaskQueue(Task **qBuf);
+    Task **getTaskQueue();
     void run();
     void nullQBuf();
   private:

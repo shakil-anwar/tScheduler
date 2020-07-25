@@ -16,9 +16,9 @@ void func3()
 {
   Serial.println(F("Task Three Done"));
 }
-Task task1(5000, &func1);
-Task taks2(5000, &func2);
-Task task3(5000, &func3);
+Task task1(1000, &func1);
+Task taks2(2000, &func2);
+Task task3(3000, &func3);
 
 Scheduler scheduler;
 void setup()
