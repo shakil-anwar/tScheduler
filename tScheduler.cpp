@@ -56,7 +56,7 @@ Task **Scheduler::getTaskQueue()
     task = ptr -> task;
     if ((currentTime - task -> _prevTime) >= task -> _interval)
     {
-      Serial.println(F("--->Task added into queue--->"));
+      // Serial.println(F("--->Task added into queue--->"));
       task -> _prevTime = currentTime;
       *qP = task;
       qP++;
@@ -73,6 +73,7 @@ Task **Scheduler::getTaskQueue()
 
 void Scheduler::run()
 {
+  // Serial.print(F("Time: "));Serial.println(_timer());
   Task  **taskPtr = getTaskQueue();
   if (*taskPtr)
   {
@@ -86,7 +87,7 @@ void Scheduler::run()
       }
       else
       {
-        Serial.println(F("Null Pointer"));
+        // Serial.println(F("Null Pointer"));
       }
       taskPtr++;
       *prevTask = NULL;
