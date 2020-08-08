@@ -4,7 +4,7 @@
 Node_t *taskHead = NULL;
 Node_t *queueHead = NULL;
 
-Task::Task(long interval, taskCb_t cb, byte priority)
+Task::Task(uint32_t interval, taskCb_t cb, byte priority)
 {
   _Cb = cb;
   _interval = interval;
@@ -50,13 +50,13 @@ Task **Scheduler::getTaskQueue()
   Task **qP = qPtr;
   Task *task = NULL;
 
-  long currentTime =  _timer();
+  uint32_t currentTime =  _timer();
   do
   {
     task = ptr -> task;
     if ((currentTime - task -> _prevTime) >= task -> _interval)
     {
-      Serial.println(F("<-------------------Task added into queue"));
+      Serial.println(F("--->Task added into queue--->"));
       task -> _prevTime = currentTime;
       *qP = task;
       qP++;

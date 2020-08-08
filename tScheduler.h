@@ -8,11 +8,11 @@ class Task
 {
     friend class Scheduler;
   public:
-    Task(long interval, taskCb_t cb, byte priority = 0);
+    Task(uint32_t interval, taskCb_t cb, byte priority = 0);
   private:
     taskCb_t _Cb;
-    long _interval;
-    long _prevTime;
+    uint32_t _interval;
+    uint32_t _prevTime;
     byte _priority;
     
 
