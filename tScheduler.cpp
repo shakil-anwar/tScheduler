@@ -12,6 +12,11 @@ Task::Task(uint32_t interval, taskCb_t cb, byte priority)
   _prevTime = 0;
 }
 
+void Task::setInterval(uint32_t intervalTime)
+{
+  _interval = intervalTime;
+}
+
 void Scheduler::begin(uint32_t (*timer)(void))
 {
   if (timer == NULL)

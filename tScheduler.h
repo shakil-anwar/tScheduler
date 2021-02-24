@@ -9,6 +9,7 @@ class Task
     friend class Scheduler;
   public:
     Task(uint32_t interval, taskCb_t cb, byte priority = 0);
+    void setInterval(uint32_t intervalTime);
   private:
     taskCb_t _Cb;
     uint32_t _interval;
